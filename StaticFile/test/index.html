@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="./main.css">
+  <style>
+    *{
+      margin: 0px;
+      padding: 0px;
+      border: 0px;
+    } 
+    body{
+      border: 10px solid red;
+    }
+  </style>
+  <script>
+    window.addEventListener( "load", function(evt) {
+      console.log('load : ',new Date() + '',  evt);
+      setTimeout(function() {
+        document.body.innerHTML = '<div>dd</div>'
+        document.body.firstChild.remove()
+      }, 5000);
+    }, false );
+  </script>
+  <script src="main.js"></script>
+  <script>
+    console.log('ff')  
+  </script>
+  <script src="a.js"></script>
+  <!-- <script src="b.js"></script> -->
+  <!-- <script src="c.js"></script> -->
+  <!-- <script src="d.js"></script> -->
+</head>
+<body>
+  hello
+  <!-- <img src="./aimage.jpg"/> -->
+  <!-- <img src="./bimage.jpg"/> -->
+</body>
+</html>

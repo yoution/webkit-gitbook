@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  event test
+  <div style='background: red;height: 200px' onClick="console.log('fff')">ff</div>
+  <script>
+    document.addEventListener( "DOMContentLoaded", function(evt) {
+      console.log('DOMContentLoaded : ',new Date() + '',  evt);
+    }, false );
+    window.addEventListener( "load", function(evt) {
+      console.log('load : ',new Date() + '',  evt);
+    }, false );
+  </script>
+</body>
+</html>
