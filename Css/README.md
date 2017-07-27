@@ -38,7 +38,7 @@ block: 取"{"开始到对应的"}"，"{"，"}"需要成对匹配，如果没有�
 * 解析:   
 prelude: 截取后解析selectorList，如果selectorList里有一个selector解析错误，则整条cssRule丢弃，解析下一条cssRule，比如语法错误，出现"}"；  
 生成selector过程，compoundSelector内部的selector从左向右，selector之间是从右向左,对于pseudoClass包含"()"的复杂类，会对"()"内的selector生成selectorList,对于例子中的第二个selector,结果为:
-```json
+```
 {
   selector,   //body
   tagHitory: {
@@ -51,7 +51,7 @@ prelude: 截取后解析selectorList，如果selectorList里有一个selector解
 }
 ```
 block: 截取后解析properties，生成对应的propertyId和propertyValue，如果properties为空，也不会丢弃整条cssRule,
-```json
+```
 properties:{
   propertyId: propertyValue;
   propertyId: propertyValue;
@@ -94,12 +94,12 @@ textNode,display:none的node不需要匹配cssRule，已经匹配过且不受前
 
 比如对于body元素，在依次从每个表的ruleSet里，依次到idRules，classRules，linkPseudoClassRules，focusPseudoClassRules, tagRules, universalRules里获取cssRules，比如获取tag时，会获取全部body的cssRules，如"#html-id body{}, xx html body{}"，后期会匹配，排除不合适的cssRule。
 
-匹配cssRule时，如果selectorList里selector大于1， 按照selectorList上倒数4个(最多4个)selector上id, class, tag值的内容*117, *19, *13得到hash，与当前dom对比；
+匹配cssRule时，如果selectorList里compoundSelector数量大于1， 按照selectorList上第二个compoundSelector开始的倒数4个(最多4个)selector上id, class, tag值的内容*17, *19, *13得到hash，与当前dom对比；
 在计算specificity时会进行最终对比，compoundSelector会生成对应的selectorFragment。
 
 ### specificity权重计算
-* id : 0x10000
-* class|pseudoClass|attr: 0x100
+* id: 0x10000
+* class|pseudoClass|attribute: 0x100
 * tag|pseudoElement: 0x1
 
 特俗处理pseudoClass:   
@@ -126,7 +126,7 @@ cascade内置440个propertity，按照匹配表顺序从每个匹配表的匹配
 * UserRule important
 * UARule important
 
-##把cascade上的样式设置到RenderStyle
+## 把cascade上的样式设置到RenderStyle
 440个样式的设置顺序 
 * 1
 * 418
