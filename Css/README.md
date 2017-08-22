@@ -82,7 +82,7 @@ ruleSet:
 
 ## 查找与匹配cssRule
 查找css按照dom树的结构遍历，从分别从匹配表的ruleSet里获取cssRules，进行对比匹配。
-textNode,display:none的node不需要匹配cssRule，已经匹配过且不受前面node影响的node不需要匹配cssRule；   
+textNode，display:none的node不需要匹配cssRule，已经匹配过且不受前面node影响的node不需要匹配cssRule；   
 匹配表顺序
 * UARules   
   CSSDefaultStyleSheets::defaultStyle   
@@ -94,7 +94,7 @@ textNode,display:none的node不需要匹配cssRule，已经匹配过且不受前
 
 比如对于body元素，在依次从每个表的ruleSet里，依次到idRules，classRules，linkPseudoClassRules，focusPseudoClassRules, tagRules, universalRules里获取cssRules，比如获取tag时，会获取全部body的cssRules，如"#html-id body{}, xx html body{}"，后期会匹配，排除不合适的cssRule。
 
-匹配cssRule时，如果selectorList里compoundSelector数量大于1， 按照selectorList上第二个compoundSelector开始的倒数4个(最多4个)selector上id, class, tag值的内容*17, *19, *13得到hash，与当前dom对比；
+匹配cssRule时，如果selectorList里compoundSelector数量大于1， 按照selectorList上第二个compoundSelector开始的倒数4个(最多4个)selector上id, class, tag值的内容x17, x19, x13得到hash，与当前dom对比；
 在计算specificity时会进行最终对比，compoundSelector会生成对应的selectorFragment。
 
 ### specificity权重计算
@@ -102,8 +102,8 @@ textNode,display:none的node不需要匹配cssRule，已经匹配过且不受前
 * class|pseudoClass|attribute: 0x100
 * tag|pseudoElement: 0x1
 
-特俗处理pseudoClass:   
-* :match :0，本身的:match不计算，但是会计算"()"，内的selectorList的权重
+特殊处理的pseudoClass:   
+* :match :0，本身的:match不计算，但是会计算"()"内的selectorList的权重
 * :not :0, 本身的:not不计算，但是取的是"()"内selectorList中每个compoundSelector的最大值
 
 下面的3个pseudoClass在上面的计算后，内部的selectorList的还会再计算一次
@@ -118,7 +118,7 @@ textNode,display:none的node不需要匹配cssRule，已经匹配过且不受前
 * `html body:not(.class, #id)`: 0x1(body) + 0x0(:not) + max(0x100(.class),0x10000(.id)) + 0x1(html) = 0x10002 = 65538
 
 ## 设置cascade
-cascade内置440个propertity，按照匹配表顺序从每个匹配表的匹配的cssRule里取出propertyValue，设置到cascade的property上。
+cascade内置440个property，按照匹配表顺序从每个匹配表的匹配的cssRule里取出propertyValue，设置到cascade的property上。
 * UARule 非important
 * UserRule 非important
 * AuthorRule 非important
