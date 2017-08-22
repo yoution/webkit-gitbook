@@ -2,7 +2,7 @@
 本文主要研究 inlineElement 在垂直方向的layout过程。   
 只探究单层嵌套，不考虑anoymousElement，不考虑overflow情况，不考虑outOfFlow情况。   
 ![inlineBox](./_image/inlineBox.png)
-inlineElement的layout过程主要为了确定span和span中字符的left，top，width，height的值，即inlineFlowBox和inlineTexBox的left，top，width，height的值。   
+inlineElement的layout过程主要为了确定span和span中字符的left，top，width，height的值，即inlineFlowBox和inlineTextBox的left，top，width，height的值。   
 对于LTR的布局，父元素blockElement在包含子元素inlineElement的时候，layout以行为单位，首先进行水平方向的布局，再进行垂直方向的布局。  
 水平方向以inlineFlowBox为单位，累计计算每个字符的宽度，判断换行位置，确定当前行所能容纳的字符的inlineFlowBox，确定每个inlineFlowBox的left值, 水平方向left计算除font本身外，还受margin，border，padding，word-wrap，word-break，white-space，word-spacing，hanging-punctuation影响；   
 垂直方向主要确定每行各个inlineFlowBox在rootInlineBox中的top值，inlineFlowBox通过vertical-align值，确定各自的top值，inlineFlowBox的top值受border，padding影响，不受margin影响，inlineTextBox不受margin，border，padding影响。   
@@ -46,7 +46,7 @@ inlineTextBox的top有以下10个值:
 
 
 ### 设置inlineFlowBox的logicalTop
-logicalTop是layout过程中设置的中间值，layout过程会持续设置logicalTop的值，直到layout结束，最终的logicalTop即为top值，对于不同的vertical-align值，inlineFlowBox的LogicalTop初始值为：   
+logicalTop是layout过程中设置的中间值，layout过程会持续设置logicalTop的值，直到layout结束，最终的logicalTop即为top值，对于不同的vertical-align值，inlineFlowBox的logicalTop初始值为：   
 * baseline: 0
 * middle: -rootInlineBox的xHeight / 2 - lineHeight / 2 + baselinePosition
 * sub: +rootInlineBox的fontSize / 5 + 1
@@ -54,17 +54,17 @@ logicalTop是layout过程中设置的中间值，layout过程会持续设置logi
 * text-top: +baselinePosition - rootInlineBox的ascent
 * top: 0
 * bottom: 0
-* text-bottom: 对于replaceElement: +rootInlineBox的descent；对于noreplaceElement: +rootInlineBox的descent - lineHeight - baselinePosition
+* text-bottom: 对于replaceElement: +rootInlineBox的descent；对于noreplaceElement: +rootInlineBox + descent - lineHeight + baselinePosition
 * baseline_middle: -lineHeight / 2 + baselinePosition
 * length: 数值：-value；百分比：-lineHeight * value   
 
-其中baselinePosition = ascent + (lineHeight - lineSpaceing) / 2
+其中baselinePosition = ascent + (lineHeight - lineSpacing) / 2
 
 
 ### rootInlineBox的maxAscent和maxDescent的确定
 * 当inlineFlowBox的vertical-align为top ，rootInlineBox的maxPositionTop =  ascent + descent
 * 当inlineFlowBox的vertical-align为bottom, rootInlineBox的maxPositionBottom = ascent + descent
-* 当inlineFlowBox的vertical-align为其他情况，maxAscent = max(ascent - LogicalTop, ascent - LogicalTop, ...)，maxDescent = max(descent + LogicalTop, descent + LogicalTop, ...)   
+* 当inlineFlowBox的vertical-align为其他情况，maxAscent = max(ascent - logicalTop, ascent - logicalTop, ...)，maxDescent = max(descent + logicalTop, descent + logicalTop, ...)   
 
 如果 maxAscent + maxDecent < max(maxPositionTop, maxPositionBottom)，调整maxAscent和maxDescent   
 * 如果inlineFlowBox的vertical-align为top，maxAscent + maxAscent < lineHeight，maxDescent = lineHeight- maxAscent   
@@ -78,7 +78,7 @@ logicalTop是layout过程中设置的中间值，layout过程会持续设置logi
 
 * 当inlineFlowBox的vertical-align为top，logicalTop = rootInlineBox的logicalHeight
 * 当inlineFlowBox的vertical-align为bottom ，logicalTop = rootInlineBox的logicalHeight + rootInlineBox的maxHeight - lineHeight
-* 当inlineFlowBox的vertical-align 为其他情况，logicalTop += rootInlineBox的LogicalTop + rootInlineBox的maxAscent - baselinePosition    
+* 当inlineFlowBox的vertical-align 为其他情况，logicalTop += rootInlineBox的logicalTop + rootInlineBox的maxAscent - baselinePosition    
 
 最终logicalTop +=  baselinePosition - ascent - borderTop - paddingTop。
 
