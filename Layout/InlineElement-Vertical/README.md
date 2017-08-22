@@ -79,7 +79,8 @@ logicalTop是layout过程中设置的中间值，layout过程会持续设置logi
 * 当inlineFlowBox的vertical-align为top，logicalTop = rootInlineBox的logicalHeight
 * 当inlineFlowBox的vertical-align为bottom ，logicalTop = rootInlineBox的logicalHeight + rootInlineBox的maxHeight - lineHeight
 * 当inlineFlowBox的vertical-align 为其他情况，logicalTop += rootInlineBox的LogicalTop + rootInlineBox的maxAscent - baselinePosition    
-最终logicalTop +=  baselinePosition - ascent - borderTop - paddingTop;   
+
+最终logicalTop +=  baselinePosition - ascent - borderTop - paddingTop。
 
 ### 确定inlineTextBox的top值
 设置inlineTextBox的logicalTop，logicalTop = inlineFlowBox的logicalTop + inlineFlowBox的(paddingTop + borderTop)
