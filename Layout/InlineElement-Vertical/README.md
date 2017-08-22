@@ -56,7 +56,8 @@ logicalTop是layout过程中设置的中间值，layout过程会持续设置logi
 * bottom: 0
 * text-bottom: 对于replaceElement: +rootInlineBox的descent；对于noreplaceElement: +rootInlineBox的descent - lineHeight - baselinePosition
 * baseline_middle: -lineHeight / 2 + baselinePosition
-* length: 数值：-value；百分比：-lineHeight x value
+* length: 数值：-value；百分比：-lineHeight * value   
+
 其中baselinePosition = ascent + (lineHeight - lineSpaceing) / 2
 
 
@@ -75,11 +76,10 @@ logicalTop是layout过程中设置的中间值，layout过程会持续设置logi
 ### 确定inlineFlowBox的top值
 在当前layout过程，父元素rootInlineBox的logicalHeight = broderTop + paddingTop，在整个文档layout的文章中会介绍；再次计算inlineFlowBox的logicalTop值，进而确定inlineTexBox的logicalTop值。   
 
-* 当inlineFlowBox的vertical-align为top，logicalTop = rootInlineBox的logicalHeight;   
-* 当inlineFlowBox的vertical-align为bottom ，logicalTop = rootInlineBox的logicalHeight + rootInlineBox的maxHeight - lineHeight;    
-* 当inlineFlowBox的vertical-align 为其他情况， logicalTop += rootInlineBox的LogicalTop + rootInlineBox的maxAscent - baselinePosition;    
-
-logicalTop +=  baselinePosition - ascent - borderTop - paddingTop;   
+* 当inlineFlowBox的vertical-align为top，logicalTop = rootInlineBox的logicalHeight
+* 当inlineFlowBox的vertical-align为bottom ，logicalTop = rootInlineBox的logicalHeight + rootInlineBox的maxHeight - lineHeight
+* 当inlineFlowBox的vertical-align 为其他情况，logicalTop += rootInlineBox的LogicalTop + rootInlineBox的maxAscent - baselinePosition    
+最终logicalTop +=  baselinePosition - ascent - borderTop - paddingTop;   
 
 ### 确定inlineTextBox的top值
 设置inlineTextBox的logicalTop，logicalTop = inlineFlowBox的logicalTop + inlineFlowBox的(paddingTop + borderTop)
@@ -87,7 +87,7 @@ logicalTop +=  baselinePosition - ascent - borderTop - paddingTop;
 ### 设置rootLineBox的logicalHeight   
 logicalHeight += maxAscent + maxDecent，当前行layout结束，继续下一行layout。
 
-参考文档(部分选择性参考，有些有错误):   
+#### 参考文档:
 * https://developer.mozilla.org/en-US/docs/Web/CSS/Replaced_element    
 * https://stackoverflow.com/questions/41336177/font-size-vs-line-height-vs-actual-height   
 * https://stackoverflow.com/questions/3654321/measuring-text-height-to-be-drawn-on-canvas-android/42091739#42091739   
